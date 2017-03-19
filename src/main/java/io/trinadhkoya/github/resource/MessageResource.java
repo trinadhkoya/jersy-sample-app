@@ -104,4 +104,19 @@ public class MessageResource {
 		messageService.removeMessage(id);
 	}
 
+	/**
+	 * what if we get request something like this "/{messageId}/comments .we
+	 * have to pass them corresponding API ,in this i have created
+	 * CommentResource as API,like wise you can create ShareResource,..etc.It
+	 * will be easy if you navigate and handle the stuff in those
+	 */
+	
+	/**METHODS not required**/
+	/** this is the method level path for the Sub Resource i.e CommentResource**/
+	@Path("/{messageId}/comments")
+	public CommentResource getCommentResource(){
+		//it looks for the CommentResource i.e SubResource for this MessageResource
+		return new CommentResource();
+	}
+
 }

@@ -1,6 +1,8 @@
 package io.trinadhkoya.github.model;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 /**
@@ -16,7 +18,7 @@ public class Message {
 	private String message;
 	private Date created;
 	private String author;
-	
+	private Map<Long,Comment> comments=new HashMap<>();
 	
 	
 	
@@ -58,6 +60,16 @@ public class Message {
 	}
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+
+	public Map<Long,Comment> getComments() {
+		return comments;
+	}
+
+
+	public void setComments(Map<Long,Comment> comments) {
+		this.comments = comments;
 	}
 	
 	
