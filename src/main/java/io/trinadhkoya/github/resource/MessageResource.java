@@ -1,5 +1,6 @@
 package io.trinadhkoya.github.resource;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.BeanParam;
@@ -11,7 +12,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import io.trinadhkoya.github.model.Message;
 import io.trinadhkoya.github.param.MessageParam;
@@ -76,15 +80,35 @@ public class MessageResource {
 		return messageService.getMessage(messageId);
 	}
 
+	// /**
+	// * adds a new message to the list/Database
+	// */
+	// @POST
+	// @Consumes(MediaType.APPLICATION_JSON)
+	// @Produces(MediaType.APPLICATION_JSON)
+	// public Message addMessage(Message message) {
+	// messageService.addMessage(message);
+	// return message;
+	// }
+
+	/** the same addMessage which returns response **/
 	/**
-	 * adds a new message to the list/Database
+	 * apart from creating a message,which also includes response with various
+	 * header data and so on Using Response and Context param 
+	 * 
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Message addMessage(Message message) {
-		messageService.addMessage(message);
-		return message;
+	public Response addMessage(Message message,@Context UriInfo info) {
+		Message newMessage = messageService.addMessage(message);
+		String newMessageId=String.valueOf(newMessage.getId());
+		URI uri=info.getAbsolutePathBuilder().path(newMessageId).build();
+		return Response.created(uri)
+				.entity(newMessage)
+				.build();
+		
+
 	}
 
 	@PUT
@@ -110,12 +134,15 @@ public class MessageResource {
 	 * CommentResource as API,like wise you can create ShareResource,..etc.It
 	 * will be easy if you navigate and handle the stuff in those
 	 */
-	
-	/**METHODS not required**/
-	/** this is the method level path for the Sub Resource i.e CommentResource**/
+
+	/** METHODS not required **/
+	/**
+	 * this is the method level path for the Sub Resource i.e CommentResource
+	 **/
 	@Path("/{messageId}/comments")
-	public CommentResource getCommentResource(){
-		//it looks for the CommentResource i.e SubResource for this MessageResource
+	public CommentResource getCommentResource() {
+		// it looks for the CommentResource i.e SubResource for this
+		// MessageResource
 		return new CommentResource();
 	}
 
