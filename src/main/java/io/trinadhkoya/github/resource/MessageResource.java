@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import io.trinadhkoya.github.model.Message;
-import io.trinadhkoya.github.param.MessageParam;
+import io.trinadhkoya.github.resource.bean.MessageParam;
 import io.trinadhkoya.github.service.MessageService;
 
 /**
@@ -76,8 +76,16 @@ public class MessageResource {
 	@GET
 	@Path("/{messageId}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_ATOM_XML })
-	public Message getMessage(@PathParam("messageId") Long messageId) {
-		return messageService.getMessage(messageId);
+	public Message getMessage(@PathParam("messageId") Long messageId,@Context UriInfo info) {
+		Message message= messageService.getMessage(messageId);
+				String uri=info.getBaseUriBuilder()
+				.path(MessageResource.class)
+				.path(Long.toString(message.getId()))
+				.build()
+				.toString();
+				message.addLink(uri,"self");
+				
+		return message;
 	}
 
 	// /**

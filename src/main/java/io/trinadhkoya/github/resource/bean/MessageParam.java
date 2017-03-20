@@ -1,4 +1,4 @@
-package io.trinadhkoya.github.param;
+package io.trinadhkoya.github.resource.bean;
 
 import javax.ws.rs.QueryParam;
 
